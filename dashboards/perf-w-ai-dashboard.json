@@ -1,0 +1,1445 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 6,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "**Session:** `$session_id`  \n**Run:** `$run_id`  \n**Workload:** `$workload`  \n**Model:** `$model`  \n**Host:** `$host`  \n_Tip: This dashboard is driven by tags written by the runner._",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.3.0",
+      "title": "Selection",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ef5ctdrqdo7b4a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 3
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ef5ctdrqdo7b4a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "orderByTime": "ASC",
+          "query": "SELECT last(\"throughput_items_s\") FROM \"ai_benchmark\" WHERE $timeFilter AND \"host\" =~ /^$host$/ AND \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/ AND \"workload\" =~ /^$workload$/ AND \"model\" =~ /^$model$/",
+          "rawQuery": true,
+          "rawSql": "SELECT throughput_items_s\r\nFROM iox.ai_benchmark\r\nWHERE $__timeFilter(time)\r\n  AND regexp_like(workload, concat('^', '${workload}', '$'))\r\n  AND regexp_like(model,    concat('^', '${model}', '$'))\r\nORDER BY time DESC\r\nLIMIT 1",
+          "refId": "A",
+          "resultFormat": "table",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "Throughput (items/s)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ef5ctdrqdo7b4a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 4,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 5,
+        "y": 3
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ef5ctdrqdo7b4a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "orderByTime": "ASC",
+          "query": "SELECT last(\"perf_per_w\") FROM \"ai_benchmark\" WHERE $timeFilter AND \"host\" =~ /^$host$/ AND \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/ AND \"workload\" =~ /^$workload$/ AND \"model\" =~ /^$model$/",
+          "rawQuery": true,
+          "rawSql": "SELECT perf_per_w\r\nFROM iox.ai_benchmark\r\nWHERE $__timeFilter(time)\r\n  AND regexp_like(workload, concat('^', '${workload}', '$'))\r\n  AND regexp_like(model,    concat('^', '${model}', '$'))\r\nORDER BY time DESC\r\nLIMIT 1\r\n",
+          "refId": "A",
+          "resultFormat": "table",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "Perf/W (items/s/W)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ef5ctdrqdo7b4a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 10,
+        "y": 3
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ef5ctdrqdo7b4a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "orderByTime": "ASC",
+          "query": "SELECT last(\"avg_gpu_power_w\") FROM \"ai_benchmark\" WHERE $timeFilter AND \"host\" =~ /^$host$/ AND \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/ AND \"workload\" =~ /^$workload$/ AND \"model\" =~ /^$model$/",
+          "rawQuery": true,
+          "rawSql": "SELECT avg_gpu_power_w\r\nFROM iox.ai_benchmark\r\nWHERE $__timeFilter(time)\r\n  AND regexp_like(workload, concat('^', '${workload}', '$'))\r\n  AND regexp_like(model,    concat('^', '${model}', '$'))\r\nORDER BY time DESC\r\nLIMIT 1\r\n\r\n",
+          "refId": "A",
+          "resultFormat": "table",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "Avg GPU Power (W)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ef5ctdrqdo7b4a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 15,
+        "y": 3
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ef5ctdrqdo7b4a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "orderByTime": "ASC",
+          "query": "SELECT last(\"max_gpu_temp_c\") FROM \"ai_benchmark\" WHERE $timeFilter AND \"host\" =~ /^$host$/ AND \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/ AND \"workload\" =~ /^$workload$/ AND \"model\" =~ /^$model$/",
+          "rawQuery": true,
+          "rawSql": "SELECT max_gpu_temp_c\r\nFROM iox.ai_benchmark\r\nWHERE $__timeFilter(time)\r\n  AND regexp_like(workload, concat('^', '${workload}', '$'))\r\n  AND regexp_like(model,    concat('^', '${model}', '$'))\r\nORDER BY time DESC\r\nLIMIT 1\r\n",
+          "refId": "A",
+          "resultFormat": "table",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "Max GPU Temp (°C)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ef5ctdrqdo7b4a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 4,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "joule"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 19,
+        "y": 3
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ef5ctdrqdo7b4a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "orderByTime": "ASC",
+          "query": "SELECT last(\"energy_per_unit_j\") FROM \"ai_benchmark\" WHERE $timeFilter AND \"host\" =~ /^$host$/ AND \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/ AND \"workload\" =~ /^$workload$/ AND \"model\" =~ /^$model$/",
+          "rawQuery": true,
+          "rawSql": "SELECT energy_per_unit_j\r\nFROM iox.ai_benchmark\r\nWHERE $__timeFilter(time)\r\n  AND regexp_like(workload, concat('^', '${workload}', '$'))\r\n  AND regexp_like(model,    concat('^', '${model}', '$'))\r\nORDER BY time DESC\r\nLIMIT 1\r\n",
+          "refId": "A",
+          "resultFormat": "table",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "Energy/Unit (J)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ef5ctdrqdo7b4a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 7
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ef5ctdrqdo7b4a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "orderByTime": "ASC",
+          "query": "SELECT mean(\"gpu_power_w\") FROM \"ai_telemetry\" WHERE $timeFilter AND \"host\" =~ /^$host$/ AND \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/ AND \"repeat\" =~ /^$repeat$/ AND \"workload\" =~ /^$workload$/ AND \"model\" =~ /^$model$/ GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__dateBinAlias(time),\r\n  avg(gpu_power_w) AS gpu_power_w\r\nFROM iox.ai_telemetry\r\nWHERE $__timeFilter(time)\r\n  AND regexp_like(workload, concat('^', '${workload}', '$'))\r\n  AND regexp_like(model,    concat('^', '${model}', '$'))\r\nGROUP BY time_binned\r\nORDER BY time_binned\r\n\r\n",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "GPU Power (W)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ef5ctdrqdo7b4a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 7
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ef5ctdrqdo7b4a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "orderByTime": "ASC",
+          "query": "SELECT mean(\"gpu_temp_c\") FROM \"ai_telemetry\" WHERE $timeFilter AND \"host\" =~ /^$host$/ AND \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/ AND \"repeat\" =~ /^$repeat$/ AND \"workload\" =~ /^$workload$/ AND \"model\" =~ /^$model$/ GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__dateBinAlias(time),\r\n  avg(gpu_temp_c) AS gpu_temp_c\r\nFROM iox.ai_telemetry\r\nWHERE $__timeFilter(time)\r\n  AND regexp_like(workload, concat('^', '${workload}', '$'))\r\n  AND regexp_like(model,    concat('^', '${model}', '$'))\r\nGROUP BY time_binned\r\nORDER BY time_binned\r\n",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "GPU Temperature (°C)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ef5ctdrqdo7b4a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ef5ctdrqdo7b4a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "orderByTime": "ASC",
+          "query": "SELECT mean(\"gpu_util_pct\") FROM \"ai_telemetry\" WHERE $timeFilter AND \"host\" =~ /^$host$/ AND \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/ AND \"repeat\" =~ /^$repeat$/ AND \"workload\" =~ /^$workload$/ AND \"model\" =~ /^$model$/ GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__dateBinAlias(time),\r\n  avg(gpu_util_pct) AS gpu_util_pct\r\nFROM iox.ai_telemetry\r\nWHERE $__timeFilter(time)\r\n  AND regexp_like(workload, concat('^', '${workload}', '$'))\r\n  AND regexp_like(model,    concat('^', '${model}', '$'))\r\nGROUP BY time_binned\r\nORDER BY time_binned\r\n",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "GPU Utilization (%)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ef5ctdrqdo7b4a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "megabytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ef5ctdrqdo7b4a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "orderByTime": "ASC",
+          "query": "SELECT mean(\"vram_used_mb\") FROM \"ai_telemetry\" WHERE $timeFilter AND \"host\" =~ /^$host$/ AND \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/ AND \"repeat\" =~ /^$repeat$/ AND \"workload\" =~ /^$workload$/ AND \"model\" =~ /^$model$/ GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__dateBinAlias(time),\r\n  avg(vram_used_mb) AS vram_used_mb\r\nFROM iox.ai_telemetry\r\nWHERE $__timeFilter(time)\r\n  AND regexp_like(workload, concat('^', '${workload}', '$'))\r\n  AND regexp_like(model,    concat('^', '${model}', '$'))\r\nGROUP BY time_binned\r\nORDER BY time_binned\r\n",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "VRAM Used (MB)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ef5ctdrqdo7b4a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 23
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ef5ctdrqdo7b4a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "orderByTime": "ASC",
+          "query": "SELECT mean(\"cpu_util_pct\") FROM \"ai_telemetry\" WHERE $timeFilter AND \"host\" =~ /^$host$/ AND \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/ AND \"repeat\" =~ /^$repeat$/ AND \"workload\" =~ /^$workload$/ AND \"model\" =~ /^$model$/ GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__dateBinAlias(time),\r\n  avg(cpu_util_pct) AS cpu_util_pct\r\nFROM iox.ai_telemetry\r\nWHERE $__timeFilter(time)\r\n  AND regexp_like(workload, concat('^', '${workload}', '$'))\r\n  AND regexp_like(model,    concat('^', '${model}', '$'))\r\nGROUP BY time_binned\r\nORDER BY time_binned\r\n",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "CPU Utilization (%)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ef5ctdrqdo7b4a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "megabytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 23
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ef5ctdrqdo7b4a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "orderByTime": "ASC",
+          "query": "SELECT mean(\"ram_used_mb\") FROM \"ai_telemetry\" WHERE $timeFilter AND \"host\" =~ /^$host$/ AND \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/ AND \"repeat\" =~ /^$repeat$/ AND \"workload\" =~ /^$workload$/ AND \"model\" =~ /^$model$/ GROUP BY time($__interval) fill(null)",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  $__dateBinAlias(time),\r\n  avg(ram_used_mb) AS ram_used_mb\r\nFROM iox.ai_telemetry\r\nWHERE $__timeFilter(time)\r\n  AND regexp_like(workload, concat('^', '${workload}', '$'))\r\n  AND regexp_like(model,    concat('^', '${model}', '$'))\r\nGROUP BY time_binned\r\nORDER BY time_binned\r\n",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "RAM Used (MB)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ef5ctdrqdo7b4a"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 31
+      },
+      "id": 13,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "ef5ctdrqdo7b4a"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "orderByTime": "ASC",
+          "query": "SELECT last(\"throughput_items_s\") AS \"throughput_items_s\", last(\"avg_gpu_power_w\") AS \"avg_gpu_power_w\", last(\"max_gpu_temp_c\") AS \"max_gpu_temp_c\", last(\"avg_gpu_temp_c\") AS \"avg_gpu_temp_c\", last(\"energy_j\") AS \"energy_j\", last(\"energy_per_unit_j\") AS \"energy_per_unit_j\", last(\"perf_per_w\") AS \"perf_per_w\", last(\"run_duration_s\") AS \"run_duration_s\" FROM \"ai_benchmark\" WHERE $timeFilter AND \"host\" =~ /^$host$/ AND \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/ AND \"workload\" =~ /^$workload$/ AND \"model\" =~ /^$model$/",
+          "rawQuery": true,
+          "rawSql": "SELECT *\r\nFROM iox.ai_benchmark\r\nWHERE $__timeFilter(time)\r\n  AND regexp_like(workload, concat('^', '${workload}', '$'))\r\n  AND regexp_like(model,    concat('^', '${model}', '$'))\r\nORDER BY time DESC\r\nLIMIT 1\r\n",
+          "refId": "A",
+          "resultFormat": "table",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "Latest Summary (ai_benchmark)",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "5s",
+  "schemaVersion": 42,
+  "tags": [
+    "perfw",
+    "ai",
+    "benchmark",
+    "telemetry"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "ef5ctdrqdo7b4a"
+        },
+        "includeAll": true,
+        "label": "Host",
+        "name": "host",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"ai_benchmark\" WITH KEY = \"host\"",
+        "refresh": 2,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "ef5ctdrqdo7b4a"
+        },
+        "includeAll": true,
+        "label": "Session ID",
+        "name": "session_id",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"ai_benchmark\" WITH KEY = \"session_id\" WHERE \"host\" =~ /^$host$/",
+        "refresh": 2,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "ef5ctdrqdo7b4a"
+        },
+        "includeAll": true,
+        "label": "Run ID",
+        "name": "run_id",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"ai_benchmark\" WITH KEY = \"run_id\" WHERE \"session_id\" =~ /^$session_id$/",
+        "refresh": 2,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "ef5ctdrqdo7b4a"
+        },
+        "definition": "SHOW TAG VALUES FROM \"ai_benchmark\" WITH KEY = \"workload\"",
+        "includeAll": true,
+        "label": "Workload",
+        "name": "workload",
+        "options": [],
+        "query": {
+          "query": "SHOW TAG VALUES FROM \"ai_benchmark\" WITH KEY = \"workload\"",
+          "refId": "InfluxVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "ef5ctdrqdo7b4a"
+        },
+        "definition": "SHOW TAG VALUES FROM \"ai_benchmark\" WITH KEY = \"model\"",
+        "includeAll": true,
+        "label": "Model",
+        "name": "model",
+        "options": [],
+        "query": {
+          "query": "SHOW TAG VALUES FROM \"ai_benchmark\" WITH KEY = \"model\"",
+          "refId": "InfluxVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "ef5ctdrqdo7b4a"
+        },
+        "includeAll": true,
+        "label": "Repeat",
+        "name": "repeat",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"ai_telemetry\" WITH KEY = \"repeat\" WHERE \"session_id\" =~ /^$session_id$/ AND \"run_id\" =~ /^$run_id$/",
+        "refresh": 2,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "timepicker": {
+    "nowDelay": "",
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Perf/W AI Workloads Live",
+  "uid": "perf-w-ai",
+  "version": 6
+}
