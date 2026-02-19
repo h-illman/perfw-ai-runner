@@ -95,6 +95,3 @@ perfw-ai-runner/
 ## Notes / Safety
 - Do **not** commit tokens. This repo reads the token from `INFLUXDB3_AUTH_TOKEN`.
 - Local output artifacts are written under `runs/` (ignored by git).
-
-## License
-MIT (add one if you want to open-source it).
